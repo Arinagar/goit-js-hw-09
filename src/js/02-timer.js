@@ -1,7 +1,6 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const inputEl = document.querySelector('#datetime-picker');
 const timerEl = document.querySelectorAll('.value');
@@ -53,10 +52,10 @@ function onBtnStartElClick(event) {
   timer = setInterval(() => {
     const delta = selectedDate - Date.now();
     const getTime = convertMs(delta);
-    timerEl[0].textContent = addLeadingZero(getTime.days);
-    timerEl[1].textContent = addLeadingZero(getTime.hours);
-    timerEl[2].textContent = addLeadingZero(getTime.minutes);
-    timerEl[3].textContent = addLeadingZero(getTime.seconds);
+    Object.entries(getTime).forEach(([name, value], idx) => {
+      timerEl[idx].textContent = addLeadingZero(value);
+    });
+
     if (delta <= 1000) {
       clearInterval(timer);
       Notiflix.Notify.success('It is time');
